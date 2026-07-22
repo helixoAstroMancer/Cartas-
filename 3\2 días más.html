@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para mi Amor ❤️</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Josefin+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#fdf8f0;
+    --brick:#5e0404;
+    --vermilion:#d83f2e;
+    --ink:#e9e5e1;
+    --paper:#fbf6ec;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--cream);font-family:'Josefin Sans',sans-serif;overflow-x:hidden;}
+  .stage{
+    position:relative;
+    width:100%;
+    min-height:100vh;
+    padding:24px;
+  }
+
+  /* ---------- ENVELOPE ---------- */
+  .envelope-wrap{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    width:min(90vw,420px);
+    cursor:pointer;
+    transition:opacity .6s ease, transform .6s ease;
+  }
+  .envelope-wrap.hide{
+    opacity:0;
+    transform:translate(-50%,calc(-50% - 30px)) scale(.96);
+    pointer-events:none;
+  }
+  .envelope{
+    position:relative;
+    width:100%;
+    aspect-ratio:3/2.1;
+  }
+  .env-body{ position:absolute;inset:0; background:var(--vermilion); }
+  .env-flap{
+    position:absolute;top:0;left:0;width:100%;height:56%;
+    background:var(--brick);
+    clip-path:polygon(0 0,50% 100%,100% 0);
+    transform-origin:top center;
+    transition:transform .9s cubic-bezier(.4,0,.2,1);
+    z-index:3;
+  }
+  .env-flap.opened{ transform:rotateX(180deg); }
+  .env-seal{
+    position:absolute;top:50%;left:50%;
+    transform:translate(-50%,-50%);
+    width:clamp(70px,20vw,100px);height:clamp(70px,20vw,100px);
+    border-radius:50%;
+    background:var(--ink);
+    display:flex;align-items:center;justify-content:center;
+    text-align:center;
+    z-index:10;
+    box-shadow:0 4px 14px rgba(0,0,0,.2);
+    transition:opacity .5s ease, transform .3s ease;
+  }
+  .env-seal:hover{ transform:translate(-50%,-50%) scale(1.08); }
+  .env-seal.fade{ opacity:0; pointer-events:none; }
+  .env-seal span{
+    font-family:'Cormorant Garamond',serif;
+    font-size:clamp(20px,6vw,26px);
+    color:var(--brick);
+    line-height:1;
+  }
+  .tap-hint{
+    text-align:center;
+    margin-top:22px;
+    font-size:12px;
+    letter-spacing:.2em;
+    color:var(--brick);
+    opacity:.75;
+  }
+
+  /* ---------- LETTER ---------- */
+  .letter-wrap{
+    position:absolute;
+    top:50%;
+    left:50%;
+    width:min(92vw,520px);
+    max-height:88vh;
+    overflow-y:auto;
+    opacity:0;
+    transform:translate(-50%,calc(-50% + 50px)) scale(.97);
+    transition:opacity .8s cubic-bezier(.4,0,.2,1), transform .8s cubic-bezier(.4,0,.2,1);
+    pointer-events:none;
+  }
+  .letter-wrap.show{
+    opacity:1;
+    transform:translate(-50%,-50%) scale(1);
+    pointer-events:auto;
+  }
+  .letter{
+    position:relative;
+    background:var(--paper);
+    padding:clamp(28px,7vw,52px) clamp(24px,7vw,48px);
+    box-shadow:0 20px 60px rgba(0,0,0,.2);
+    border:1px solid rgba(94,4,4,.08);
+  }
+  .letter-header{
+    text-align:center;
+    margin-bottom:28px;
+  }
+  .letter-header .to{
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    color:var(--brick);
+    font-size:clamp(30px,8vw,44px);
+    margin:0;
+  }
+  .heart{ color:var(--vermilion); }
+  .countdown-line{
+    text-align:center;
+    font-size:11px;
+    letter-spacing:.15em;
+    color:var(--vermilion);
+    margin:14px 0 4px;
+  }
+  .date-line{
+    text-align:center;
+    font-size:11px;
+    letter-spacing:.1em;
+    color:#8a7f74;
+    margin-bottom:24px;
+  }
+  .divider{
+    width:44px;height:1px;
+    background:var(--vermilion);
+    opacity:.5;
+    margin:24px auto;
+  }
+  .body-text p{
+    font-family:'Cormorant Garamond',serif;
+    font-size:clamp(17px,4.2vw,20px);
+    line-height:1.75;
+    color:#3a2f28;
+    margin:0 0 18px;
+  }
+  .signature{
+    margin-top:32px;
+    text-align:right;
+  }
+  .signature p{
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    color:var(--brick);
+    font-size:18px;
+    line-height:1.5;
+    margin:0;
+  }
+  .ps{
+    margin-top:30px;
+    padding-top:20px;
+    border-top:1px dashed rgba(94,4,4,.25);
+  }
+  .ps p{
+    font-family:'Cormorant Garamond',serif;
+    font-size:15px;
+    font-style:italic;
+    color:#6b5a4d;
+    line-height:1.6;
+    margin:0;
+  }
+
+  /* ---------- GALLERY ---------- */
+  .gallery{
+    margin-top:34px;
+  }
+  .gallery-label{
+    font-size:10px;
+    letter-spacing:.15em;
+    color:var(--brick);
+    opacity:.7;
+    text-align:center;
+    margin-bottom:12px;
+  }
+  .gallery-track{
+    display:flex;
+    gap:10px;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    padding-bottom:6px;
+  }
+  .gallery-slot{
+    flex:0 0 78%;
+    aspect-ratio:3/4;
+    scroll-snap-align:center;
+    background:repeating-linear-gradient(45deg, #efe6d8, #efe6d8 10px, #e7dcc9 10px, #e7dcc9 20px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#a9977f;
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    font-size:14px;
+    text-align:center;
+    padding:12px;
+    border:1px solid rgba(94,4,4,.1);
+  }
+  .close-btn{
+    position:absolute;
+    top:16px;
+    right:16px;
+    width:34px;
+    height:34px;
+    border:none;
+    border-radius:50%;
+    background:rgba(94,4,4,.08);
+    color:var(--brick);
+    font-size:18px;
+    line-height:1;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:background .2s ease;
+  }
+  .close-btn:hover{ background:rgba(94,4,4,.16); }
+</style>
+</head>
+<body>
+
+<div class="stage">
+
+  <!-- SOBRE -->
+  <div class="envelope-wrap" id="envelopeWrap">
+    <div class="envelope">
+      <div class="env-flap" id="envFlap"></div>
+      <div class="env-body"></div>
+      <div class="env-seal" id="envSeal"><span>❤</span></div>
+    </div>
+    <p class="tap-hint">TOCA PARA ABRIR</p>
+  </div>
+
+  <!-- CARTA -->
+  <div class="letter-wrap" id="letterWrap">
+    <div class="letter">
+      <button class="close-btn" onclick="closeEnvelope()" aria-label="Cerrar">&times;</button>
+      <div class="letter-header">
+        <p class="to">Para mi Amor <span class="heart">❤️</span></p>
+      </div>
+      <p class="countdown-line">3/2 DÍAS MÁS</p>
+      <p class="date-line">22 / 07 / 26</p>
+      <div class="divider"></div>
+
+      <div class="body-text">
+        <p>Hoy, miércoles 22 de julio, me desperté solo pensando en ti, como todos los días.</p>
+        <p>Te mandé un mensaje queriendo que, cuando despertaras, pensaras en mí. Puede ser atrevido después de lo de ayer, y este mensaje o carta también lo es.</p>
+        <p>Es bastante raro que, un día después de que casi pierdo al amor de mi vida, esté haciendo esto.</p>
+        <p>Se puede tomar como eso que se hace por desesperación y que dejaré de hacer cuando todo mejore. Pero sé que te gustaría recibir algo así todos los días cuando todo esté bien. Aún no me decido qué hacer, pero voy a hacer algo. Lo voy a hacer.</p>
+        <p>Por cierto, me encuentro en mi trabajo y estoy escribiendo esto. Te parecerá una mala idea, pero ya acabé todo lo que me tocaba hacer; solo queda esperar.</p>
+        <p>Estoy pensando si hacer un origami o tal vez una carta. Bueno, la carta ya la estoy haciendo, jajaja. ¿Por qué no ambos? O esta noche sentarme al piano digital e intentar tocar algo. No sé qué saldría.</p>
+        <p>Hay toda clase de emociones.</p>
+        <p>¿Cómo está mi corazón? Todos los 21... Pepito lo mismo, de 10:00 p. m. a 11:00 p. m. ¿Cómo está mi corazón? Puedo decir que lo único que hay en mi corazón es esperanza.</p>
+      </div>
+
+      <div class="signature">
+        <p>De: Aris Daniel</p>
+        <p>Para: Laura Contreras ❤️</p>
+      </div>
+
+      <div class="ps">
+        <p>P. D.: Tenía esto en el proyecto de la nueva página que estoy haciendo para ti, así que mejor lo uso acá también. Creo que quedaría bien una galería de este tipo.</p>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function openEnvelope(){
+    document.getElementById('envFlap').classList.add('opened');
+    document.getElementById('envSeal').classList.add('fade');
+    setTimeout(function(){
+      document.getElementById('envelopeWrap').classList.add('hide');
+      document.getElementById('letterWrap').classList.add('show');
+    }, 500);
+  }
+  function closeEnvelope(){
+    document.getElementById('letterWrap').classList.remove('show');
+    setTimeout(function(){
+      document.getElementById('envelopeWrap').classList.remove('hide');
+      document.getElementById('envFlap').classList.remove('opened');
+      document.getElementById('envSeal').classList.remove('fade');
+    }, 400);
+  }
+  document.getElementById('envelopeWrap').addEventListener('click', openEnvelope);
+</script>
+
+</body>
+  </html>
+
